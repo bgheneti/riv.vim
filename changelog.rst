@@ -3,6 +3,10 @@ Start change.log again to track version changes.
 Changelogs
 ==========
 
+* 0.78:
+
+  A. Merged fix (#124) for issue #80
+
 * 0.77: 
 
   A. A brand new html theme for riv, rhythm.css_
