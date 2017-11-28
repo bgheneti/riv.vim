@@ -1,13 +1,15 @@
 #######################
-Riv: Take Notes in rst
+Riv: Take notes in rST
 #######################
 
-.. image:: https://badges.gitter.im/Join%20Chat.svg
-   :alt: Join the chat at https://gitter.im/Rykka/riv.vim
-   :target: https://gitter.im/Rykka/riv.vim?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+ .. note:: 
+	This **is a fork** of `Rykka's riv.vim <https://github.com/Rykka/riv.vim>`_ 
+	where I've merged a few fixes from people who have done various things with
+	Riv, as it seems the original author is gone.
 
-:Last Update: 2017-02-07
-:Version: 0.791
+
+:Last Update: 2017-11-28
+:Version: 0.7.10
 
 ..
 
@@ -15,11 +17,14 @@ Riv: Take Notes in rst
 
     -- `Jon Stewart`_
 
+----
+
 
 What's New
 ===========
 
-0.791: Add a conceal syntax for *.rst filelink
+- 0.7.10: Various fixes from various authors; see the changelog_.
+- 0.7.9: Conceal added for internal rST-links.
 
 
 Intro
