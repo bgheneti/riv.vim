@@ -5,7 +5,11 @@ Changelogs
 
 * 0.78:
 
-  A. Merged fix (#124) for issue #80
+  A. Merged fix (#124) for issue #80 
+
+  B. Merged fix (#115) for transitions missing one hyphen
+
+
 
 * 0.77: 
 
