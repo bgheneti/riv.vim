@@ -52,10 +52,10 @@ fun! riv#id() "{{{
     " @return
     " -1 if not in project, which proj[-1] is the Temp Proj dir.
     " else the project's id in list g:_riv_c.p
-    
-    if !exists('b:riv_id') 
+
+    if !exists('b:riv_id')
         let b:riv_id = -1
-        
+
         let f = expand('%:p')
         for proj in g:_riv_c.p
             if  riv#path#is_rel_to( proj._root_path, f)
@@ -64,7 +64,7 @@ fun! riv#id() "{{{
             endif
         endfor
     endif
-    
+
     return b:riv_id
 endfun "}}}
 fun! riv#get_latest() "{{{
@@ -129,7 +129,7 @@ let s:default.options = {
     \'file_link_invalid_hl' : 'ErrorMsg',
     \'file_link_style'    : 1,
     \'highlight_code'     : "lua,python,cpp,javascript,vim,sh",
-    \'code_indicator'     : 1, 
+    \'code_indicator'     : 1,
     \'link_cursor_hl'     : 1,
     \'create_link_pos'    : '$',
     \'todo_levels'        : " ,o,X",
@@ -209,7 +209,7 @@ endfun "}}}
 "}}}
 
 fun! s:set_proj_conf(proj) "{{{
-    " XXX 
+    " XXX
     " We can skip this step, just use p_basic's option as an back up
     let proj = copy(g:_riv_c.p_basic)
     for [key,var] in items(a:proj)
@@ -237,12 +237,12 @@ fun! riv#load_conf() "{{{1
     let s:c.doc_path  = fnamemodify(s:autoload_path ,':h').'/doc/'
 
     " Python:
-    if has("python") "{{{
-        let s:c['py'] = "py "
-        let s:c.has_py = 2
-    elseif has("python3")
+    if has("python3") "{{{
         let s:c['py'] = "py3 "
         let s:c.has_py = 3
+    elseif has("python")
+        let s:c['py'] = "py "
+        let s:c.has_py = 2
     else
         let s:c['py'] = "echom 'No Python: ' "
         let s:c.has_py = 0
@@ -267,7 +267,7 @@ fun! riv#load_conf() "{{{1
     "
     " Is this correct way to define slash?
     " can 'shellslash' be used?
-    
+
     let s:c.is_windows = has('win16') || has('win32') || has('win64') || has('win95')
     let s:c.is_cygwin = has('win32unix')
     let s:c.is_mac = !s:c.is_windows && !s:c.is_cygwin
@@ -275,7 +275,7 @@ fun! riv#load_conf() "{{{1
     \ (!isdirectory('/proc') && executable('sw_vers')))
 
     let s:c.slash =  s:c.is_windows ? '\' : '/'
-    
+
     " Project: "{{{
     let s:c.p_basic = {
         \'name'               : "My Note" ,
@@ -311,7 +311,7 @@ fun! riv#load_conf() "{{{1
     endfor
 
     call map(s:c.p, "s:set_proj_conf(v:val)")
-    
+
     let s:t.doc_exts = 'rst|txt'
     let s:c.doc_ext_list = ['txt']
     for proj in s:c.p
@@ -336,7 +336,7 @@ fun! riv#load_conf() "{{{1
         " the plain one
         " >>> echo matchstr('.rst', '^\.\zs.*$')
         " rst
-        let proj._source_suffix = matchstr(proj.source_suffix,'^\.\zs.*$') 
+        let proj._source_suffix = matchstr(proj.source_suffix,'^\.\zs.*$')
         if proj._source_suffix !~ '\v'.s:t.doc_exts
             " >>> echo g:_riv_t.doc_exts
             " rst|txt
@@ -345,7 +345,7 @@ fun! riv#load_conf() "{{{1
         endif
     endfor
     "}}}
-    
+
     " Patterns:
     let s:t.prior_str = g:riv_todo_priorities
 
@@ -357,7 +357,7 @@ fun! riv#load_conf() "{{{1
     let s:t.list_lvs  =  ["*","+","-"]
     let s:t.highlight_code = split(g:riv_highlight_code,',')
     let s:t.month_names = split(g:riv_month_names,',')
-    
+
     let s:c.sect_lvs = split(g:riv_section_levels,'\zs')
     let s:c.sect_lvs_b = split('#*+:.^','\zs')
     let s:c.sect_lvs_style = [[3,'#']]
@@ -371,14 +371,14 @@ fun! riv#load_conf() "{{{1
     else
         let s:c.i_tab_user_cmd = g:riv_i_tab_user_cmd
     endif
-    
+
     if !empty(g:riv_i_stab_user_cmd) && g:riv_i_stab_user_cmd =~ '\\<'
         " it's not literal string
         exe 'let s:c.i_stab_user_cmd = "' . g:riv_i_stab_user_cmd . '"'
     else
         let s:c.i_stab_user_cmd = g:riv_i_stab_user_cmd
     endif
-    
+
     " This is Invalid Now!!
     " for key in split(g:riv_ignored_imaps,',')
     "     call (g:riv_default.buf_imaps, key)
@@ -396,7 +396,7 @@ fun! riv#load_conf() "{{{1
         endif
     endif "}}}
     "}}}
-    
+
     " Errors:
     let s:e.NOT_REL_PATH = "Riv: Not a related path"
     let s:e.INVALID_TODO_GROUP = "Riv: Not a valid Todo Group"
@@ -410,11 +410,11 @@ fun! riv#load_conf() "{{{1
 
 endfun "}}}
 fun! riv#load_aug() "{{{
-    " Load the global auto group 
+    " Load the global auto group
     aug RIV_GLOBAL
         au!
         au WinEnter,BufWinEnter * call riv#show_menu()
-        
+
         " We only want to set the filetype for the files in
         " the project which has that option.
         for p in g:_riv_c.p
@@ -422,9 +422,9 @@ fun! riv#load_aug() "{{{
                 exe 'au BufEnter '.p._root_path.'*'.p.source_suffix.'  setl ft=rst'
             endif
         endfor
-        au! FileType rst call riv#buf_load_syn()  
+        au! FileType rst call riv#buf_load_syn()
     aug END
-    
+
 endfun "}}}
 fun! riv#init() "{{{
     " for init autoload
@@ -438,9 +438,9 @@ fun! riv#buf_load_aug() "{{{
     aug RIV_BUFFER "{{{
         " NOTE:
         " We should take care of the buffer loading here.
-        " use au! in each group to clear to avoid 
+        " use au! in each group to clear to avoid
         " duplicated loading
-        au! BufWritePost <buffer>  call riv#fold#update() 
+        au! BufWritePost <buffer>  call riv#fold#update()
         au  BufWritePost <buffer>  call riv#todo#update()
         au!  BufWritePre  <buffer>  call riv#create#auto_mkdir()
         au!  WinLeave,BufWinLeave     <buffer>  call riv#file#update()
@@ -473,11 +473,11 @@ fun! riv#buf_init() "{{{
     if exists("g:riv_disable_folding") && g:riv_disable_folding != 0
         " Do nothing
     else
-        setl foldmethod=expr foldexpr=riv#fold#expr(v:lnum) 
+        setl foldmethod=expr foldexpr=riv#fold#expr(v:lnum)
         setl foldtext=riv#fold#text()
     endif
 
-    setl comments=fb:.. commentstring=..\ %s 
+    setl comments=fb:.. commentstring=..\ %s
     setl formatoptions+=tcroql expandtab
     let b:undo_ftplugin = "setl fdm< fde< fdt< com< cms< et< fo<"
                 \ "| sil! unlet! "
